@@ -20,7 +20,7 @@ namespace CeasarsCode.Logic
         {
             alphabets = new Dictionary<Alphabet, string>
             {
-                { Alphabet.English, " abcdefghijkmnopqrstuvwxyz" },
+                { Alphabet.English, " abcdefghijklmnopqrstuvwxyz" },
                 { Alphabet.Ukrainian, " абвгґдеєжзиіїйклмнопрстуфхцчшщьюя" }
             };
         }
