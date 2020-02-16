@@ -41,7 +41,7 @@ namespace CeasarsCode.UI
         private void transformButton_Click(object sender, RoutedEventArgs e)
         {
             var alphabet = (Alphabet)alphabetComboBox.SelectedIndex;
-            var inputText = inputTextBox.Text.ToLower();
+            var inputText = GetInputText();
 
             if (int.TryParse(keyTextBox.Text, out int key)
                 && IsTextValid(inputText, alphabet)
@@ -61,9 +61,9 @@ namespace CeasarsCode.UI
             }
         }
 
-        private void inputTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void CheckIsTextValid()
         {
-            var inputText = inputTextBox.Text.ToLower();
+            var inputText = GetInputText();
             var alphabet = (Alphabet)alphabetComboBox.SelectedIndex;
 
             if (IsTextValid(inputText, alphabet))
@@ -74,6 +74,11 @@ namespace CeasarsCode.UI
             {
                 inputTextBox.BorderBrush = new SolidColorBrush(Color.FromRgb(200, 0, 0));
             }
+        }
+
+        private void inputTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            CheckIsTextValid();
         }
 
         private void keyTextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -102,7 +107,7 @@ namespace CeasarsCode.UI
 
             if (openFileDialog.ShowDialog().Value)
             {
-                inputTextBox.Text = File.ReadAllText(openFileDialog.FileName);
+                inputTextBox.Text = File.ReadAllText(openFileDialog.FileName, Encoding.UTF8);
             }
         }
 
@@ -144,6 +149,36 @@ namespace CeasarsCode.UI
         {
             var aboutWindow = new AboutWindow();
             aboutWindow.ShowDialog();
+        }
+
+        private void bruteforceButton_Click(object sender, RoutedEventArgs e)
+        {
+            var alphabet = (Alphabet)alphabetComboBox.SelectedIndex;
+            var inputText = GetInputText();
+
+            if (IsTextValid(inputText, alphabet))
+            {
+                outputTextBox.Clear();
+
+                int key = 0;
+                while (IsKeyValid(key, alphabet))
+                {
+                    var brutforcedText = Decrypt(inputText, key, alphabet);
+                    outputTextBox.Text += $"Key: {key}\n{brutforcedText}\n\n";
+
+                    ++key;
+                }
+            }
+        }
+
+        private string GetInputText()
+        {
+            return inputTextBox.Text.ToLower();
+        }
+
+        private void alphabetComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            CheckIsTextValid();
         }
     }
 }
