@@ -27,7 +27,7 @@ namespace CeasarsCode.Logic
 
         public static bool IsKeyValid(int key, Alphabet alphabet)
         {
-            return key < alphabets[alphabet].Length;
+            return key >= 0 && key < alphabets[alphabet].Length;
         }
 
         public static bool IsTextValid(string text, Alphabet alphabet)
