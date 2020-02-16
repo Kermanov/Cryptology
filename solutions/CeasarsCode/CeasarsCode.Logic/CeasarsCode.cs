@@ -20,8 +20,8 @@ namespace CeasarsCode.Logic
         {
             alphabets = new Dictionary<Alphabet, string>
             {
-                { Alphabet.English, " abcdefghijklmnopqrstuvwxyz" },
-                { Alphabet.Ukrainian, " абвгґдеєжзиіїйклмнопрстуфхцчшщьюя" }
+                { Alphabet.English, " 'abcdefghijklmnopqrstuvwxyz" },
+                { Alphabet.Ukrainian, " 'абвгґдеєжзиіїйклмнопрстуфхцчшщьюя" }
             };
         }
 
@@ -49,7 +49,7 @@ namespace CeasarsCode.Logic
             foreach (var symbol in text)
             {
                 int index = alphabets[alphabet].IndexOf(symbol);
-                index = (index + shift) % alphabets[alphabet].Length;
+                index = (index + shift + alphabets[alphabet].Length) % alphabets[alphabet].Length;
                 stringBuilder.Append(alphabets[alphabet][index]);
             }
 
