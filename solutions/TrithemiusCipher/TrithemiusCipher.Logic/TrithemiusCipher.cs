@@ -48,19 +48,6 @@ namespace TrithemiusCipher.Logic
             return true;
         }
 
-        private static string Shift(string text, int shift, Alphabet alphabet)
-        {
-            var stringBuilder = new StringBuilder(text.Length);
-            foreach (var symbol in text)
-            {
-                int index = alphabets[alphabet].IndexOf(symbol);
-                index = (index + shift + alphabets[alphabet].Length) % alphabets[alphabet].Length;
-                stringBuilder.Append(alphabets[alphabet][index]);
-            }
-
-            return stringBuilder.ToString();
-        }
-
         private static string EncodeViaFunction(string text, Alphabet alphabet, Func<int, int> func)
         {
             var stringBuilder = new StringBuilder(text.Length);
