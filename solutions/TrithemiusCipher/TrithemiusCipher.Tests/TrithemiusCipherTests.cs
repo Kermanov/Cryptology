@@ -15,6 +15,7 @@ namespace TrithemiusCipher.Tests
             string encryptedText = Encrypt(inputText, Logic.Alphabet.English, -50, -3);
             string decryptedText = Decrypt(encryptedText, Logic.Alphabet.English, -50, -3);
 
+            Assert.AreNotEqual(inputText, encryptedText);
             Assert.AreEqual(inputText, decryptedText);
         }
 
@@ -25,6 +26,7 @@ namespace TrithemiusCipher.Tests
             string encryptedText = Encrypt(inputText, Logic.Alphabet.English, -50, -3, 2);
             string decryptedText = Decrypt(encryptedText, Logic.Alphabet.English, -50, -3, 2);
 
+            Assert.AreNotEqual(inputText, encryptedText);
             Assert.AreEqual(inputText, decryptedText);
         }
 
@@ -35,6 +37,7 @@ namespace TrithemiusCipher.Tests
             string encryptedText = Encrypt(inputText, Logic.Alphabet.English, "moto");
             string decryptedText = Decrypt(encryptedText, Logic.Alphabet.English, "moto");
 
+            Assert.AreNotEqual(inputText, encryptedText);
             Assert.AreEqual(inputText, decryptedText);
         }
     }
