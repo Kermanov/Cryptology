@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrithemiusCipher.Logic", "T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrithemiusCipher.UI", "TrithemiusCipher.UI\TrithemiusCipher.UI.csproj", "{9C8F665B-F309-4D02-9414-D041D457AE5F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrithemiusCipher.Tests", "TrithemiusCipher.Tests\TrithemiusCipher.Tests.csproj", "{A9A8DD8D-7CC2-4D97-BB0C-A122767738EB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{9C8F665B-F309-4D02-9414-D041D457AE5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C8F665B-F309-4D02-9414-D041D457AE5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9C8F665B-F309-4D02-9414-D041D457AE5F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9A8DD8D-7CC2-4D97-BB0C-A122767738EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9A8DD8D-7CC2-4D97-BB0C-A122767738EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9A8DD8D-7CC2-4D97-BB0C-A122767738EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9A8DD8D-7CC2-4D97-BB0C-A122767738EB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
