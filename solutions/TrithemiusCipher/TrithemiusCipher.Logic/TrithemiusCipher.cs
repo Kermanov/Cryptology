@@ -12,10 +12,10 @@ namespace TrithemiusCipher.Logic
         Ukrainian
     }
 
+
     public static class TrithemiusCipher
     {
         private static Dictionary<Alphabet, string> alphabets;
-
         static TrithemiusCipher()
         {
             alphabets = new Dictionary<Alphabet, string>
@@ -61,40 +61,58 @@ namespace TrithemiusCipher.Logic
             return stringBuilder.ToString();
         }
 
-        private static string EncodeViaFunction(string text, Alphabet alphabet, Func<int, int> func)
+        private static string ShiftViaFunction(string text, Alphabet alphabet, Func<int, int> func)
         {
             var stringBuilder = new StringBuilder(text.Length);
             for (int i = 0; i < text.Length; ++i)
             {
                 int index = alphabets[alphabet].IndexOf(text[i]);
-                int shift = func(i);
-                while (shift < 0)
+                int pos = index + func(i);
+                while (pos < 0)
                 {
-                    shift += alphabets[alphabet].Length;
+                    pos += alphabets[alphabet].Length;
                 }
 
-                index = (index + shift) % alphabets[alphabet].Length;
+                index = pos % alphabets[alphabet].Length;
                 stringBuilder.Append(alphabets[alphabet][index]);
             }
 
             return stringBuilder.ToString();
         }
 
-        public static string Encode(string text, Alphabet alphabet, int coefA, int coefB)
+        public static string Encrypt(string text, Alphabet alphabet, int coefA, int coefB)
         {
-            return EncodeViaFunction(text, alphabet, p => coefA * p + coefB);
+            return ShiftViaFunction(text, alphabet, p => coefA * p + coefB);
         }
 
-        public static string Encode(string text, Alphabet alphabet, int coefA, int coefB, int coefC)
+        public static string Encrypt(string text, Alphabet alphabet, int coefA, int coefB, int coefC)
         {
-            return EncodeViaFunction(text, alphabet, p => coefA * p * p + coefB * p + coefC);
+            return ShiftViaFunction(text, alphabet, p => coefA * p * p + coefB * p + coefC);
         }
 
-        public static string Encode(string text, Alphabet alphabet, string moto)
+        public static string Encrypt(string text, Alphabet alphabet, string moto)
         {
-            return EncodeViaFunction(text, alphabet, p =>
+            return ShiftViaFunction(text, alphabet, p =>
             {
                 return alphabets[alphabet].IndexOf(moto[p % moto.Length]);
+            });
+        }
+
+        public static string Decrypt(string text, Alphabet alphabet, int coefA, int coefB)
+        {
+            return ShiftViaFunction(text, alphabet, p => -(coefA * p + coefB));
+        }
+
+        public static string Decrypt(string text, Alphabet alphabet, int coefA, int coefB, int coefC)
+        {
+            return ShiftViaFunction(text, alphabet, p => -(coefA * p * p + coefB * p + coefC));
+        }
+
+        public static string Decrypt(string text, Alphabet alphabet, string moto)
+        {
+            return ShiftViaFunction(text, alphabet, p =>
+            {
+                return -alphabets[alphabet].IndexOf(moto[p % moto.Length]);
             });
         }
     }
