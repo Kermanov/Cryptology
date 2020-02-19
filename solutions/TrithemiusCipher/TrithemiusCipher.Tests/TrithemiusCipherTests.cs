@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using static TrithemiusCipher.Logic.TrithemiusCipher;
@@ -8,6 +9,41 @@ namespace TrithemiusCipher.Tests
     [TestClass]
     public class TrithemiusCipherTests
     {
+        private string engAlphabet = " 'abcdefghijklmnopqrstuvwxyz";
+        //private string ukrAlphabet = " 'абвгґдеєжзиіїйклмнопрстуфхцчшщьюя";
+
+        private string GetRandomString(string alphabet)
+        {
+            var rand = new Random();
+            int length = rand.Next(1, 256);
+            var stringBuilder = new StringBuilder(length);
+            for (int i = 0; i < length; ++i)
+            {
+                stringBuilder.Append(alphabet[rand.Next(alphabet.Length)]);
+            }
+
+            return stringBuilder.ToString();
+        }
+
+        private void GetRandomLinearKey(out int coefA, out int coefB)
+        {
+            var rand = new Random();
+            coefA = rand.Next(-100, 100);
+            coefB = rand.Next(-100, 100);
+        }
+
+        private void GetRandomQuadraticKey(out int coefA, out int coefB, out int coefC)
+        {
+            GetRandomLinearKey(out coefA, out coefB);
+            var rand = new Random();
+            coefC = rand.Next(-100, 100);
+        }
+
+        private string GetRandomMotoKey(string alphabet)
+        {
+            return GetRandomString(alphabet);
+        }
+
         [TestMethod]
         public void TestEncryptAndDecryptLinear()
         {
@@ -39,6 +75,22 @@ namespace TrithemiusCipher.Tests
 
             Assert.AreNotEqual(inputText, encryptedText);
             Assert.AreEqual(inputText, decryptedText);
+        }
+
+        [TestMethod]
+        public void TestRandomEncryptAndDecryptLinearEnglish()
+        {
+            int iterations = 100;
+            for (int i = 0; i < iterations; ++i)
+            {
+                string inputText = GetRandomString(engAlphabet);
+                GetRandomLinearKey(out int coefA, out int coefB);
+                string encryptedText = Encrypt(inputText, Logic.Alphabet.English, coefA, coefB);
+                string decryptedText = Decrypt(encryptedText, Logic.Alphabet.English, coefA, coefB);
+
+                Assert.AreNotEqual(inputText, encryptedText);
+                Assert.AreEqual(inputText, decryptedText);
+            }
         }
     }
 }
