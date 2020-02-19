@@ -55,6 +55,7 @@
                 <ComboBox x:Name="alphabetComboBox" SelectedIndex="0" Width="90" SelectionChanged="alphabetComboBox_SelectionChanged">
                     <ComboBoxItem>English</ComboBoxItem>
                     <ComboBoxItem>Ukrainian</ComboBoxItem>
+                    <ComboBoxItem>Binary</ComboBoxItem>
                 </ComboBox>
             </StackPanel>
             

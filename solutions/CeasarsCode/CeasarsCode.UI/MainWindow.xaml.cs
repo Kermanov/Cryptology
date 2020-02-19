@@ -26,6 +26,8 @@ namespace CeasarsCode.UI
     public partial class MainWindow : Window
     {
         private string filterString = "Text file (*.txt)|*.txt";
+        private byte[] inputBinaryData;
+        private byte[] outputBinaryData;
 
         public MainWindow()
         {
@@ -41,9 +43,30 @@ namespace CeasarsCode.UI
         private void transformButton_Click(object sender, RoutedEventArgs e)
         {
             var alphabet = (Alphabet)alphabetComboBox.SelectedIndex;
+
+            if (alphabet == Alphabet.Binary
+                && int.TryParse(keyTextBox.Text, out int binaryKey)
+                && IsBinaryKeyValid(binaryKey)
+                && inputBinaryData != null
+            )
+            {
+                var mode = (Mode)modeComboBox.SelectedIndex;
+
+                if (mode == Mode.Encrypt)
+                {
+                    outputBinaryData = EncryptBytes(inputBinaryData, (byte)binaryKey);
+                }
+                else if (mode == Mode.Decrypt)
+                {
+                    outputBinaryData = DecryptBytes(inputBinaryData, (byte)binaryKey);
+                }
+
+                outputTextBox.Text = "<output binary data>";
+            }
+
             var inputText = GetInputText();
 
-            if (int.TryParse(keyTextBox.Text, out int key)
+            if (alphabet != Alphabet.Binary && int.TryParse(keyTextBox.Text, out int key)
                 && IsTextValid(inputText, alphabet)
                 && IsKeyValid(key, alphabet)
             )
@@ -66,7 +89,7 @@ namespace CeasarsCode.UI
             var inputText = GetInputText();
             var alphabet = (Alphabet)alphabetComboBox.SelectedIndex;
 
-            if (IsTextValid(inputText, alphabet))
+            if (alphabet == Alphabet.Binary || IsTextValid(inputText, alphabet))
             {
                 inputTextBox.BorderBrush = new SolidColorBrush(Color.FromRgb(0, 200, 0));
             }
@@ -85,7 +108,15 @@ namespace CeasarsCode.UI
         {
             var alphabet = (Alphabet)alphabetComboBox.SelectedIndex;
 
-            if (int.TryParse(keyTextBox.Text, out int key)
+            if (alphabet == Alphabet.Binary
+                && int.TryParse(keyTextBox.Text, out int binaryKey)
+                && IsBinaryKeyValid(binaryKey))
+            {
+                keyTextBox.BorderBrush = new SolidColorBrush(Color.FromRgb(0, 200, 0));
+                return;
+            }
+
+            if (alphabet != Alphabet.Binary && int.TryParse(keyTextBox.Text, out int key)
                 && IsKeyValid(key, alphabet)
             )
             {
@@ -101,13 +132,28 @@ namespace CeasarsCode.UI
         {
             var openFileDialog = new OpenFileDialog
             {
-                Multiselect = false,
-                Filter = filterString
+                Multiselect = false
+                //Filter = filterString
             };
 
             if (openFileDialog.ShowDialog().Value)
             {
-                inputTextBox.Text = File.ReadAllText(openFileDialog.FileName, Encoding.UTF8);
+                if (openFileDialog.FileName.Split(',').Last() == "txt")
+                {
+                    inputTextBox.Text = File.ReadAllText(openFileDialog.FileName, Encoding.UTF8);
+                    inputBinaryData = null;
+                }
+                else
+                {
+                    using (var fileStream = File.Open(openFileDialog.FileName, FileMode.Open))
+                    {
+                        using (var reader = new BinaryReader(fileStream))
+                        {
+                            inputBinaryData = reader.ReadBytes((int)fileStream.Length);
+                            inputTextBox.Text = "<input binary data>";
+                        }
+                    }
+                }
             }
         }
 
@@ -115,13 +161,22 @@ namespace CeasarsCode.UI
         {
             var saveFileDialog = new SaveFileDialog
             {
-                Filter = filterString
+                //Filter = filterString
             };
 
 
             if (saveFileDialog.ShowDialog().Value)
             {
-                File.WriteAllText(saveFileDialog.FileName, text);
+                if (outputBinaryData != null 
+                    && (Alphabet)alphabetComboBox.SelectedIndex == Alphabet.Binary
+                )
+                {
+                    File.WriteAllBytes(saveFileDialog.FileName, outputBinaryData);
+                }
+                else
+                {
+                    File.WriteAllText(saveFileDialog.FileName, text);
+                }
             }
         }
 

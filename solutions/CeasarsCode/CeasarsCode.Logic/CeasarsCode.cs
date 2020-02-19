@@ -9,7 +9,8 @@ namespace CeasarsCode.Logic
     public enum Alphabet
     {
         English,
-        Ukrainian
+        Ukrainian,
+        Binary
     }
 
     public static class CeasarsCode
@@ -28,6 +29,11 @@ namespace CeasarsCode.Logic
         public static bool IsKeyValid(int key, Alphabet alphabet)
         {
             return key >= 0 && key < alphabets[alphabet].Length;
+        }
+
+        public static bool IsBinaryKeyValid(int key)
+        {
+            return key >= 0 && key < 256;
         }
 
         public static bool IsTextValid(string text, Alphabet alphabet)
@@ -64,6 +70,27 @@ namespace CeasarsCode.Logic
         public static string Decrypt(string text, int key, Alphabet alphabet)
         {
             return Shift(text, -key, alphabet);
+        }
+
+        private static byte[] BiteShift(byte[] bytes, int shift)
+        {
+            var shiftedBytes = new byte[bytes.Length];
+            for (int i = 0; i < bytes.Length; ++i)
+            {
+                shiftedBytes[i] = (byte)((bytes[i] + 256 + shift) % 256);
+            }
+
+            return shiftedBytes;
+        }
+
+        public static byte[] EncryptBytes(byte[] bytes, byte key)
+        {
+            return BiteShift(bytes, key);
+        }
+
+        public static byte[] DecryptBytes(byte[] bytes, byte key)
+        {
+            return BiteShift(bytes, -key);
         }
     }
 }
