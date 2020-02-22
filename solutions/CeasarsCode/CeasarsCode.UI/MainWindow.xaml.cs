@@ -211,7 +211,7 @@ namespace CeasarsCode.UI
             var alphabet = (Alphabet)alphabetComboBox.SelectedIndex;
             var inputText = GetInputText();
 
-            if (IsTextValid(inputText, alphabet))
+            if (alphabet != Alphabet.Binary && IsTextValid(inputText, alphabet))
             {
                 outputTextBox.Clear();
 
