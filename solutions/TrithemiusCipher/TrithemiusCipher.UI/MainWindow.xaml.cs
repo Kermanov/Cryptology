@@ -48,6 +48,54 @@ namespace TrithemiusCipher.UI
         private void transformButton_Click(object sender, RoutedEventArgs e)
         {
 
+            if (CheckIsTextValid() && CheckIsKeyValid())
+            {
+                var alphabet = (Alphabet)alphabetComboBox.SelectedIndex;
+                var keyType = (KeyType)keyTypeComboBox.SelectedIndex;
+
+                if (keyType == KeyType.Linear)
+                {
+                    var coefs = keyTextBox.Text.Split();
+                    int coefA = int.Parse(coefs[0]);
+                    int coefB = int.Parse(coefs[1]);
+
+                    if (modeComboBox.SelectedIndex == 0)
+                    {
+                        outputTextBox.Text = Encrypt(inputTextBox.Text, alphabet, coefA, coefB);
+                    }
+                    else
+                    {
+                        outputTextBox.Text = Decrypt(inputTextBox.Text, alphabet, coefA, coefB);
+                    }
+                }
+                else if (keyType == KeyType.Quadratic)
+                {
+                    var coefs = keyTextBox.Text.Split();
+                    int coefA = int.Parse(coefs[0]);
+                    int coefB = int.Parse(coefs[1]);
+                    int coefC = int.Parse(coefs[2]);
+
+                    if (modeComboBox.SelectedIndex == 0)
+                    {
+                        outputTextBox.Text = Encrypt(inputTextBox.Text, alphabet, coefA, coefB, coefC);
+                    }
+                    else
+                    {
+                        outputTextBox.Text = Decrypt(inputTextBox.Text, alphabet, coefA, coefB, coefC);
+                    }
+                }
+                else if (keyType == KeyType.Moto)
+                {
+                    if (modeComboBox.SelectedIndex == 0)
+                    {
+                        outputTextBox.Text = Encrypt(inputTextBox.Text, alphabet, keyTextBox.Text);
+                    }
+                    else
+                    {
+                        outputTextBox.Text = Decrypt(inputTextBox.Text, alphabet, keyTextBox.Text);
+                    }
+                }
+            }
         }
 
         private bool CheckIsKeyValid()
@@ -89,12 +137,13 @@ namespace TrithemiusCipher.UI
             return isKeyValid;
         }
 
-        private void CheckIsTextValid()
+        private bool CheckIsTextValid()
         {
             var inputText = GetInputText();
             var alphabet = (Alphabet)alphabetComboBox.SelectedIndex;
 
-            if (IsTextValid(inputText, alphabet))
+            var isTextValid = IsTextValid(inputText, alphabet);
+            if (isTextValid)
             {
                 inputTextBox.BorderBrush = new SolidColorBrush(Color.FromRgb(0, 200, 0));
             }
@@ -102,6 +151,8 @@ namespace TrithemiusCipher.UI
             {
                 inputTextBox.BorderBrush = new SolidColorBrush(Color.FromRgb(200, 0, 0));
             }
+
+            return isTextValid;
         }
 
         private void inputTextBox_TextChanged(object sender, TextChangedEventArgs e)
