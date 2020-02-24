@@ -20,6 +20,13 @@ using static TrithemiusCipher.Logic.TrithemiusCipher;
 
 namespace TrithemiusCipher.UI
 {
+    enum KeyType
+    {
+        Linear,
+        Quadratic,
+        Moto
+    }
+
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
@@ -41,6 +48,45 @@ namespace TrithemiusCipher.UI
         private void transformButton_Click(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        private bool CheckIsKeyValid()
+        {
+            var keyString = keyTextBox.Text;
+            var keyType = (KeyType)keyTypeComboBox.SelectedIndex;
+
+            bool isKeyValid = false;
+            if (keyType == KeyType.Linear)
+            {
+                var coefs = keyString.Split();
+                isKeyValid = coefs.Length == 2 
+                    && IsKeyValid(coefs[0], out int _) 
+                    && IsKeyValid(coefs[1], out int _);
+            }
+            else if (keyType == KeyType.Quadratic)
+            {
+                var coefs = keyString.Split();
+                isKeyValid = coefs.Length == 3 
+                    && IsKeyValid(coefs[0], out int _) 
+                    && IsKeyValid(coefs[1], out int _) 
+                    && IsKeyValid(coefs[1], out int _);
+            }
+            else if (keyType == KeyType.Moto)
+            {
+                var alphabet = (Alphabet)alphabetComboBox.SelectedIndex;
+                isKeyValid = IsKeyValid(keyString, alphabet);
+            }
+
+            if (isKeyValid)
+            {
+                keyTextBox.BorderBrush = new SolidColorBrush(Color.FromRgb(0, 200, 0));
+            }
+            else
+            {
+                keyTextBox.BorderBrush = new SolidColorBrush(Color.FromRgb(200, 0, 0));
+            }
+
+            return isKeyValid;
         }
 
         private void CheckIsTextValid()
@@ -65,7 +111,7 @@ namespace TrithemiusCipher.UI
 
         private void keyTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-
+            CheckIsKeyValid();
         }
 
         private void OpenMenuItem_Click(object sender, RoutedEventArgs e)
