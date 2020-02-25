@@ -96,8 +96,8 @@ namespace TrithemiusCipher.Tests
         [TestMethod]
         public void TestCrackMoto()
         {
-            string key = "qwer";
-            string decryptedText = "test hello world message";
+            string key = "qwert";
+            string decryptedText = "message";
             string encryptedText = Encrypt(decryptedText, Logic.Alphabet.English, key);
 
             var crackedKey = CrackMoto(encryptedText, decryptedText, Logic.Alphabet.English);
@@ -110,8 +110,7 @@ namespace TrithemiusCipher.Tests
             else
             {
                 System.Diagnostics.Trace.WriteLine(crackedKey);
-                var keys = crackedKey.Split('\n');
-                Assert.IsTrue(key == keys[0] || key == keys[1]);
+                Assert.AreEqual(key, crackedKey);
             }
         }
 

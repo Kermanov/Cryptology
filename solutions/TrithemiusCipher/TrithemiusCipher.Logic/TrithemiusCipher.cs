@@ -116,56 +116,33 @@ namespace TrithemiusCipher.Logic
             });
         }
 
+        private static bool PatternCanFillString(string pattern, string str)
+        {
+            var replaced = str.Replace(pattern, "");
+            return replaced.Length < pattern.Length && pattern.Contains(replaced);
+        }
+
         public static string CrackMoto(string encryptedText, string decryptedText, Alphabet alphabet)
         {
-            var deltasDict = new Dictionary<int, int>();
+            var deltaStringBuilder = new StringBuilder(encryptedText.Length);
+            var alph = alphabets[alphabet];
             for (int i = 0; i < encryptedText.Length; ++i)
             {
-                int delta = (alphabets[alphabet].IndexOf(encryptedText[i]) 
-                    - alphabets[alphabet].IndexOf(decryptedText[i]) 
-                    + alphabets[alphabet].Length) 
-                    % alphabets[alphabet].Length;
+                int delta = (alph.IndexOf(encryptedText[i]) - alph.IndexOf(decryptedText[i]) + alph.Length) % alph.Length;
+                deltaStringBuilder.Append(alph[delta]);
+            }
 
-                if (deltasDict.ContainsKey(delta))
+            var deltaString = deltaStringBuilder.ToString();
+            for (int i = 1; i < deltaString.Length + 1; ++i)
+            {
+                var pattern = deltaString.Substring(0, i);
+                if (PatternCanFillString(pattern, deltaString))
                 {
-                    deltasDict[delta]++;
-                }
-                else
-                {
-                    deltasDict.Add(delta, 1);
+                    return pattern;
                 }
             }
 
-            var averageKeyLength = (double)encryptedText.Length / deltasDict.Values.Min();
-            if (averageKeyLength == encryptedText.Length)
-            {
-                return null;
-            }
-
-            int floorKeyLength = (int)Math.Floor(averageKeyLength);
-            int ceilKeyLength = (int)Math.Ceiling(averageKeyLength);
-
-            var floorKeyBuilder = new StringBuilder(floorKeyLength);
-            for (int i = 0; i < floorKeyLength; ++i)
-            {
-                int delta = (alphabets[alphabet].IndexOf(encryptedText[i])
-                    - alphabets[alphabet].IndexOf(decryptedText[i])
-                    + alphabets[alphabet].Length)
-                    % alphabets[alphabet].Length;
-                floorKeyBuilder.Append(alphabets[alphabet][delta]);
-            }
-
-            var ceilKeyBuilder = new StringBuilder(ceilKeyLength);
-            for (int i = 0; i < ceilKeyLength; ++i)
-            {
-                int delta = (alphabets[alphabet].IndexOf(encryptedText[i])
-                    - alphabets[alphabet].IndexOf(decryptedText[i])
-                    + alphabets[alphabet].Length)
-                    % alphabets[alphabet].Length;
-                ceilKeyBuilder.Append(alphabets[alphabet][delta]);
-            }
-
-            return floorKeyBuilder.ToString() + "\n" + ceilKeyBuilder.ToString();
+            return null;
         }
 
         public static string CrackLinear(string encryptedText, string decryptedText, Alphabet alphabet)
