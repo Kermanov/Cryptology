@@ -167,5 +167,24 @@ namespace TrithemiusCipher.Logic
 
             return floorKeyBuilder.ToString() + "\n" + ceilKeyBuilder.ToString();
         }
+
+        public static string CrackLinear(string encryptedText, string decryptedText, Alphabet alphabet)
+        {
+            var alph = alphabets[alphabet];
+            int coefB = alph.IndexOf(encryptedText[0]) - alph.IndexOf(decryptedText[0]);
+            int coefA = alph.IndexOf(encryptedText[1]) - alph.IndexOf(decryptedText[1]) - coefB;
+            return $"{coefA} {coefB}";
+        }
+
+        public static string CrackQuadratic(string encryptedText, string decryptedText, Alphabet alphabet)
+        {
+            var alph = alphabets[alphabet];
+            int coefC = alph.IndexOf(encryptedText[0]) - alph.IndexOf(decryptedText[0]);
+            int coefA = (alph.IndexOf(encryptedText[2]) - alph.IndexOf(decryptedText[2]) - coefC) / 2 
+                - alph.IndexOf(encryptedText[1]) + alph.IndexOf(decryptedText[1]) + coefC;
+            int coefB = alph.IndexOf(encryptedText[1]) - alph.IndexOf(decryptedText[1]) - coefA - coefC;
+
+            return $"{coefA} {coefB} {coefC}";
+        }
     }
 }
