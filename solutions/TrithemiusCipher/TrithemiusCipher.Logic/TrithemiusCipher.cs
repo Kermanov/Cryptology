@@ -115,5 +115,57 @@ namespace TrithemiusCipher.Logic
                 return -alphabets[alphabet].IndexOf(moto[p % moto.Length]);
             });
         }
+
+        public static string CrackMoto(string encryptedText, string decryptedText, Alphabet alphabet)
+        {
+            var deltasDict = new Dictionary<int, int>();
+            for (int i = 0; i < encryptedText.Length; ++i)
+            {
+                int delta = (alphabets[alphabet].IndexOf(encryptedText[i]) 
+                    - alphabets[alphabet].IndexOf(decryptedText[i]) 
+                    + alphabets[alphabet].Length) 
+                    % alphabets[alphabet].Length;
+
+                if (deltasDict.ContainsKey(delta))
+                {
+                    deltasDict[delta]++;
+                }
+                else
+                {
+                    deltasDict.Add(delta, 1);
+                }
+            }
+
+            var averageKeyLength = (double)encryptedText.Length / deltasDict.Values.Min();
+            if (averageKeyLength == encryptedText.Length)
+            {
+                return null;
+            }
+
+            int floorKeyLength = (int)Math.Floor(averageKeyLength);
+            int ceilKeyLength = (int)Math.Ceiling(averageKeyLength);
+
+            var floorKeyBuilder = new StringBuilder(floorKeyLength);
+            for (int i = 0; i < floorKeyLength; ++i)
+            {
+                int delta = (alphabets[alphabet].IndexOf(encryptedText[i])
+                    - alphabets[alphabet].IndexOf(decryptedText[i])
+                    + alphabets[alphabet].Length)
+                    % alphabets[alphabet].Length;
+                floorKeyBuilder.Append(alphabets[alphabet][delta]);
+            }
+
+            var ceilKeyBuilder = new StringBuilder(ceilKeyLength);
+            for (int i = 0; i < ceilKeyLength; ++i)
+            {
+                int delta = (alphabets[alphabet].IndexOf(encryptedText[i])
+                    - alphabets[alphabet].IndexOf(decryptedText[i])
+                    + alphabets[alphabet].Length)
+                    % alphabets[alphabet].Length;
+                ceilKeyBuilder.Append(alphabets[alphabet][delta]);
+            }
+
+            return floorKeyBuilder.ToString() + "\n" + ceilKeyBuilder.ToString();
+        }
     }
 }

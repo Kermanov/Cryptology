@@ -92,5 +92,27 @@ namespace TrithemiusCipher.Tests
                 Assert.AreEqual(inputText, decryptedText);
             }
         }
+
+        [TestMethod]
+        public void TestCrackMoto()
+        {
+            string key = "qwer";
+            string decryptedText = "test hello world message";
+            string encryptedText = Encrypt(decryptedText, Logic.Alphabet.English, key);
+
+            var crackedKey = CrackMoto(encryptedText, decryptedText, Logic.Alphabet.English);
+
+            if (crackedKey == null)
+            {
+                Assert.IsNull(crackedKey);
+                System.Diagnostics.Trace.WriteLine("null");
+            }
+            else
+            {
+                System.Diagnostics.Trace.WriteLine(crackedKey);
+                var keys = crackedKey.Split('\n');
+                Assert.IsTrue(key == keys[0] || key == keys[1]);
+            }
+        }
     }
 }
