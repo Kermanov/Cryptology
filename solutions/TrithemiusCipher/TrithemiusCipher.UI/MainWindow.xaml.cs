@@ -233,5 +233,24 @@ namespace TrithemiusCipher.UI
         {
             CheckIsTextValid();
         }
+
+        private void crackButton_Click(object sender, RoutedEventArgs e)
+        {
+            var alphabet = (Alphabet)crackAlphabetComboBox.SelectedIndex;
+            var keyType = (KeyType)crackKeyTypeComboBox.SelectedIndex;
+
+            if (keyType == KeyType.Linear)
+            {
+                crackedKeyTextBox.Text = CrackLinear(encryptedTextBox.Text, decryptedTextBox.Text, alphabet);
+            }
+            else if (keyType == KeyType.Quadratic)
+            {
+                crackedKeyTextBox.Text = CrackQuadratic(encryptedTextBox.Text, decryptedTextBox.Text, alphabet);
+            }
+            else if (keyType == KeyType.Moto)
+            {
+                crackedKeyTextBox.Text = CrackMoto(encryptedTextBox.Text, decryptedTextBox.Text, alphabet) ?? "Can not find key";
+            }
+        }
     }
 }
