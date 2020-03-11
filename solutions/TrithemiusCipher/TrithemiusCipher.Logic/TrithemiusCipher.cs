@@ -115,5 +115,53 @@ namespace TrithemiusCipher.Logic
                 return -alphabets[alphabet].IndexOf(moto[p % moto.Length]);
             });
         }
+
+        private static bool PatternCanFillString(string pattern, string str)
+        {
+            var replaced = str.Replace(pattern, "");
+            return replaced.Length < pattern.Length && pattern.Contains(replaced);
+        }
+
+        public static string CrackMoto(string encryptedText, string decryptedText, Alphabet alphabet)
+        {
+            var deltaStringBuilder = new StringBuilder(encryptedText.Length);
+            var alph = alphabets[alphabet];
+            for (int i = 0; i < encryptedText.Length; ++i)
+            {
+                int delta = (alph.IndexOf(encryptedText[i]) - alph.IndexOf(decryptedText[i]) + alph.Length) % alph.Length;
+                deltaStringBuilder.Append(alph[delta]);
+            }
+
+            var deltaString = deltaStringBuilder.ToString();
+            for (int i = 1; i < deltaString.Length + 1; ++i)
+            {
+                var pattern = deltaString.Substring(0, i);
+                if (PatternCanFillString(pattern, deltaString))
+                {
+                    return pattern;
+                }
+            }
+
+            return null;
+        }
+
+        public static string CrackLinear(string encryptedText, string decryptedText, Alphabet alphabet)
+        {
+            var alph = alphabets[alphabet];
+            int coefB = alph.IndexOf(encryptedText[0]) - alph.IndexOf(decryptedText[0]);
+            int coefA = alph.IndexOf(encryptedText[1]) - alph.IndexOf(decryptedText[1]) - coefB;
+            return $"{coefA} {coefB}";
+        }
+
+        public static string CrackQuadratic(string encryptedText, string decryptedText, Alphabet alphabet)
+        {
+            var alph = alphabets[alphabet];
+            int coefC = alph.IndexOf(encryptedText[0]) - alph.IndexOf(decryptedText[0]);
+            int coefA = (alph.IndexOf(encryptedText[2]) - alph.IndexOf(decryptedText[2]) - coefC) / 2 
+                - alph.IndexOf(encryptedText[1]) + alph.IndexOf(decryptedText[1]) + coefC;
+            int coefB = alph.IndexOf(encryptedText[1]) - alph.IndexOf(decryptedText[1]) - coefA - coefC;
+
+            return $"{coefA} {coefB} {coefC}";
+        }
     }
 }

@@ -6,83 +6,164 @@
         xmlns:local="clr-namespace:TrithemiusCipher.UI"
         mc:Ignorable="d"
         Title="Trithemius Cipher" Height="450" Width="800"
-        MinHeight="225" MinWidth="400">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition></ColumnDefinition>
-            <ColumnDefinition Width="150"></ColumnDefinition>
-            <ColumnDefinition></ColumnDefinition>
-        </Grid.ColumnDefinitions>
+        MinHeight="400" MinWidth="400">
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="30"></RowDefinition>
-            <RowDefinition></RowDefinition>
-        </Grid.RowDefinitions>
+    <TabControl>
+        <TabItem Header="Encrypt/Decrypt">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition Width="150"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
 
-        <Menu x:Name="menu" VerticalAlignment="Stretch" Grid.Row="0" Grid.ColumnSpan="3">
-            <MenuItem Header="File">
-                <MenuItem Header="New" Click="NewMenuItem_Click"></MenuItem>
-                <MenuItem Header="Open" Click="OpenMenuItem_Click"></MenuItem>
-                <MenuItem Header="Save Input As..." Click="SaveInputMenuItem_Click"></MenuItem>
-                <MenuItem Header="Save Output As..." Click="SaveOutputMenuItem_Click"></MenuItem>
-            </MenuItem>
-            <MenuItem Header="About" Click="AboutMenuItem_Click"></MenuItem>
-        </Menu>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="30"></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
 
-        <Label Grid.Row="1" Grid.Column="0" Content="Input" FontSize="17" FontWeight="Bold" VerticalAlignment="Bottom"/>
-        <TextBox x:Name="inputTextBox" 
-                 Grid.Row="2" 
-                 Grid.Column="0" 
-                 Margin="5" 
-                 TextChanged="inputTextBox_TextChanged" 
-                 BorderThickness="2"
-                 VerticalScrollBarVisibility="Auto"
-                 HorizontalScrollBarVisibility="Auto"/>
+                <Menu x:Name="menu" VerticalAlignment="Stretch" Grid.Row="0" Grid.ColumnSpan="3">
+                    <MenuItem Header="File">
+                        <MenuItem Header="New" Click="NewMenuItem_Click"></MenuItem>
+                        <MenuItem Header="Open" Click="OpenMenuItem_Click"></MenuItem>
+                        <MenuItem Header="Save Input As..." Click="SaveInputMenuItem_Click"></MenuItem>
+                        <MenuItem Header="Save Output As..." Click="SaveOutputMenuItem_Click"></MenuItem>
+                    </MenuItem>
+                    <MenuItem Header="About" Click="AboutMenuItem_Click"></MenuItem>
+                </Menu>
 
-        <Label Grid.Row="1" Grid.Column="2" Content="Output" FontSize="17" FontWeight="Bold" VerticalAlignment="Bottom"/>
-        <TextBox x:Name="outputTextBox" 
-                 Grid.Row="2"
-                 Grid.Column="2"
-                 Margin="5"
-                 IsReadOnly="True"
-                 VerticalScrollBarVisibility="Auto"
-                 HorizontalScrollBarVisibility="Auto"/>
+                <Label Grid.Row="1" Grid.Column="0" Content="Input" FontSize="17" FontWeight="Bold" VerticalAlignment="Bottom"/>
+                <TextBox x:Name="inputTextBox" 
+                     Grid.Row="2" 
+                     Grid.Column="0" 
+                     Margin="5" 
+                     TextChanged="inputTextBox_TextChanged" 
+                     BorderThickness="2"
+                     VerticalScrollBarVisibility="Auto"
+                     HorizontalScrollBarVisibility="Auto"/>
 
-        <StackPanel Grid.Row="2" Grid.Column="1">
-            <StackPanel Orientation="Horizontal" Margin="0, 5, 0, 5">
-                <Label Content="Alphabet" HorizontalAlignment="Left" Width="60"/>
-                <ComboBox x:Name="alphabetComboBox" SelectedIndex="0" Width="90" SelectionChanged="alphabetComboBox_SelectionChanged">
-                    <ComboBoxItem>English</ComboBoxItem>
-                    <ComboBoxItem>Ukrainian</ComboBoxItem>
-                </ComboBox>
-            </StackPanel>
+                <Label Grid.Row="1" Grid.Column="2" Content="Output" FontSize="17" FontWeight="Bold" VerticalAlignment="Bottom"/>
+                <TextBox x:Name="outputTextBox" 
+                     Grid.Row="2"
+                     Grid.Column="2"
+                     Margin="5"
+                     IsReadOnly="True"
+                     VerticalScrollBarVisibility="Auto"
+                     HorizontalScrollBarVisibility="Auto"/>
 
-            <StackPanel Orientation="Horizontal">
-                <Label Content="Mode" HorizontalAlignment="Left" Width="60"/>
-                <ComboBox x:Name="modeComboBox" SelectedIndex="0" Width="90">
-                    <ComboBoxItem>Encrypt</ComboBoxItem>
-                    <ComboBoxItem>Decrypt</ComboBoxItem>
-                </ComboBox>
-            </StackPanel>
+                <StackPanel Grid.Row="2" Grid.Column="1">
+                    <StackPanel Orientation="Horizontal" Margin="0, 5, 0, 5">
+                        <Label Content="Alphabet" HorizontalAlignment="Left" Width="60"/>
+                        <ComboBox x:Name="alphabetComboBox" SelectedIndex="0" Width="90" SelectionChanged="alphabetComboBox_SelectionChanged">
+                            <ComboBoxItem>English</ComboBoxItem>
+                            <ComboBoxItem>Ukrainian</ComboBoxItem>
+                        </ComboBox>
+                    </StackPanel>
 
-            <StackPanel Orientation="Horizontal" Margin="0, 5, 0, 5">
-                <Label Content="Key type" HorizontalAlignment="Left" Width="60"/>
-                <ComboBox x:Name="keyTypeComboBox" SelectedIndex="0" Width="90">
-                    <ComboBoxItem>Linear function</ComboBoxItem>
-                    <ComboBoxItem>Quadratic function</ComboBoxItem>
-                    <ComboBoxItem>Moto</ComboBoxItem>
-                </ComboBox>
-            </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Mode" HorizontalAlignment="Left" Width="60"/>
+                        <ComboBox x:Name="modeComboBox" SelectedIndex="0" Width="90">
+                            <ComboBoxItem>Encrypt</ComboBoxItem>
+                            <ComboBoxItem>Decrypt</ComboBoxItem>
+                        </ComboBox>
+                    </StackPanel>
 
-            <StackPanel Orientation="Horizontal" Margin="0, 5, 0, 5">
-                <Label Content="Key" HorizontalAlignment="Left" Width="60"/>
-                <TextBox x:Name="keyTextBox" Width="90" TextChanged="keyTextBox_TextChanged" BorderThickness="2" VerticalContentAlignment="Center"></TextBox>
-            </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0, 5, 0, 5">
+                        <Label Content="Key type" HorizontalAlignment="Left" Width="60"/>
+                        <ComboBox x:Name="keyTypeComboBox" SelectedIndex="0" Width="90">
+                            <ComboBoxItem>Linear function</ComboBoxItem>
+                            <ComboBoxItem>Quadratic function</ComboBoxItem>
+                            <ComboBoxItem>Moto</ComboBoxItem>
+                        </ComboBox>
+                    </StackPanel>
 
-            <Button x:Name="transformButton" Content="Transform" Height="25" Click="transformButton_Click"/>
-            <Button x:Name="bruteforceButton" Height="25" Margin="0, 5, 0, 5" Click="bruteforceButton_Click">Brute Force</Button>
-        </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0, 5, 0, 5">
+                        <Label Content="Key" HorizontalAlignment="Left" Width="60"/>
+                        <TextBox x:Name="keyTextBox" Width="90" TextChanged="keyTextBox_TextChanged" BorderThickness="2" VerticalContentAlignment="Center"></TextBox>
+                    </StackPanel>
 
-    </Grid>
+                    <Button x:Name="transformButton" Content="Transform" Height="25" Click="transformButton_Click"/>
+                </StackPanel>
+
+            </Grid>
+        </TabItem>
+
+        <TabItem Header="Crack">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"></RowDefinition>
+                    <RowDefinition Height="3*"></RowDefinition>
+                    <RowDefinition Height="30"></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition Width="150"></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <Label Content="Encrypted" 
+                       FontWeight="Bold" 
+                       FontSize="17" 
+                       VerticalAlignment="Bottom"
+                       Grid.Row="0"
+                       Grid.Column="0"/>
+
+                <Label Content="Decrypted" 
+                       FontWeight="Bold" 
+                       FontSize="17" 
+                       VerticalAlignment="Bottom"
+                       Grid.Row="0"
+                       Grid.Column="2"/>
+
+                <TextBox x:Name="encryptedTextBox"
+                         Grid.Row="1"
+                         Grid.Column="0"
+                         Margin="5, 0"/>
+
+                <TextBox x:Name="decryptedTextBox"
+                         Grid.Row="1"
+                         Grid.Column="2"
+                         Margin="5, 0"/>
+
+                <Label Content="Cracked key" 
+                       FontWeight="Bold" 
+                       FontSize="17" 
+                       VerticalAlignment="Bottom"
+                       Grid.Row="2"
+                       Grid.Column="0"/>
+
+                <TextBox x:Name="crackedKeyTextBox"
+                         Grid.Row="3"
+                         Grid.Column="0"
+                         Grid.ColumnSpan="3"
+                         IsReadOnly="True"
+                         Margin="5, 0, 5, 5"/>
+
+                <StackPanel Grid.Row="1" Grid.Column="1">
+                    <StackPanel Orientation="Horizontal" Margin="0, 5, 0, 5">
+                        <Label Content="Alphabet" HorizontalAlignment="Left" Width="60"/>
+                        <ComboBox x:Name="crackAlphabetComboBox" SelectedIndex="0" Width="90" SelectionChanged="alphabetComboBox_SelectionChanged">
+                            <ComboBoxItem>English</ComboBoxItem>
+                            <ComboBoxItem>Ukrainian</ComboBoxItem>
+                        </ComboBox>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal" Margin="0, 5, 0, 5">
+                        <Label Content="Key type" HorizontalAlignment="Left" Width="60"/>
+                        <ComboBox x:Name="crackKeyTypeComboBox" SelectedIndex="0" Width="90" SelectionChanged="alphabetComboBox_SelectionChanged">
+                            <ComboBoxItem>Linear function</ComboBoxItem>
+                            <ComboBoxItem>Quadratic function</ComboBoxItem>
+                            <ComboBoxItem>Moto</ComboBoxItem>
+                        </ComboBox>
+                    </StackPanel>
+
+                    <Button x:Name="crackButton" Content="Crack" Height="25" Click="crackButton_Click"/>
+                </StackPanel>
+            </Grid>
+        </TabItem>
+        
+    </TabControl>
 </Window>

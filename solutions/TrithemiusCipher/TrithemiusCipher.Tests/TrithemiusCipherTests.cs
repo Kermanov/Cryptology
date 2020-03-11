@@ -92,5 +92,60 @@ namespace TrithemiusCipher.Tests
                 Assert.AreEqual(inputText, decryptedText);
             }
         }
+
+        [TestMethod]
+        public void TestCrackMoto()
+        {
+            string key = "qwert";
+            string decryptedText = "message";
+            string encryptedText = Encrypt(decryptedText, Logic.Alphabet.English, key);
+
+            var crackedKey = CrackMoto(encryptedText, decryptedText, Logic.Alphabet.English);
+
+            if (crackedKey == null)
+            {
+                Assert.IsNull(crackedKey);
+                System.Diagnostics.Trace.WriteLine("null");
+            }
+            else
+            {
+                System.Diagnostics.Trace.WriteLine(crackedKey);
+                Assert.AreEqual(key, crackedKey);
+            }
+        }
+
+        [TestMethod]
+        public void TestCrackLinear()
+        {
+            int keyCoefA = 30;
+            int keyCoefB = -43;
+            string decryptedText = "test hello world message";
+            string encryptedText = Encrypt(decryptedText, Logic.Alphabet.English, keyCoefA, keyCoefB);
+            var crackedKeys = CrackLinear(encryptedText, decryptedText, Logic.Alphabet.English).Split();
+
+            int crackedCoefA = int.Parse(crackedKeys[0]);
+            int crackedCoefB = int.Parse(crackedKeys[1]);
+
+            string decryptedTextCrackedKey = Decrypt(encryptedText, Logic.Alphabet.English, crackedCoefA, crackedCoefB);
+            Assert.AreEqual(decryptedText, decryptedTextCrackedKey);
+        }
+
+        [TestMethod]
+        public void TestCrackQuadratic()
+        {
+            int keyCoefA = 30;
+            int keyCoefB = -43;
+            int keyCoefC = 23;
+            string decryptedText = "test hello world message";
+            string encryptedText = Encrypt(decryptedText, Logic.Alphabet.English, keyCoefA, keyCoefB, keyCoefC);
+            var crackedKeys = CrackQuadratic(encryptedText, decryptedText, Logic.Alphabet.English).Split();
+
+            int crackedCoefA = int.Parse(crackedKeys[0]);
+            int crackedCoefB = int.Parse(crackedKeys[1]);
+            int crackedCoefC = int.Parse(crackedKeys[2]);
+
+            string decryptedTextCrackedKey = Decrypt(encryptedText, Logic.Alphabet.English, crackedCoefA, crackedCoefB, crackedCoefC);
+            Assert.AreEqual(decryptedText, decryptedTextCrackedKey);
+        }
     }
 }
